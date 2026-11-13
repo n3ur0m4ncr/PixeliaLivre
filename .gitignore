@@ -1,0 +1,35 @@
+# Local packaged runtime folder (kept locally; distributed via GitHub Releases)
+PixeliaLivre/
+release-assets/
+
+# PyInstaller build outputs
+build/
+dist/
+src/build/
+src/dist/
+*.spec
+
+# Runtime downloaded Frida wheel & logs
+runtime/
+**/runtime/
+*.log
+self-test.json
+
+# Python bytecode & virtual environments
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Packaged archives
+*.zip
+*.7z
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

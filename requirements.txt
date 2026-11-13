@@ -1,0 +1,9 @@
+# Dependência de empacotamento (para compilar o executável com PyInstaller)
+pyinstaller==6.9.0
+
+# Nota sobre o Frida:
+# O executável compilado exclui o módulo frida (--exclude-module frida) e baixa
+# automaticamente o wheel oficial frida==17.2.17 do PyPI na primeira conexão
+# com verificação SHA-256 (veja src/bootstrap.py).
+# Caso queira pré-instalar ou baixar o wheel manualmente para uso offline:
+#   pip download --only-binary=:all: --platform win_amd64 --python-version 312 frida==17.2.17
