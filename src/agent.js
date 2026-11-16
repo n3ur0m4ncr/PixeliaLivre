@@ -3,6 +3,7 @@
 // Pixelia Livre: modifications are restricted to the supported single-player game.
 const GAME = Process.getModuleByName('GameAssembly.dll');
 const MINIGAMES_SUPPORTED = __MINIGAMES_SUPPORTED__;
+const BASKETBALL_SUPPORTED = __BASKETBALL_SUPPORTED__;
 if (Process.arch !== 'ia32' || Process.mainModule.name.toLowerCase() !== 'to pixelia.exe')
   throw new Error('Esta edição exige To Pixelia para Windows, 32 bits.');
 const NIL = ptr(0), PS = Process.pointerSize;
@@ -137,7 +138,7 @@ function readSnapshot(s){
   return {connected:true,ready:true,status:'Conectado ao To Pixelia. Opções prontas.',money:get(s,F.money),skills:sk,attributes:at,needs:ns,clock,...options};
 }
 function validate(name,value){
-  if(['needs','health','minigames','basket'].includes(name)){if(typeof value!=='boolean')throw new Error('Opção inválida.');if(value&&!MINIGAMES_SUPPORTED&&['minigames','basket'].includes(name))throw new Error('Assistência de minigames indisponível nesta versão do jogo.');}
+  if(['needs','health','minigames','basket'].includes(name)){if(typeof value!=='boolean')throw new Error('Opção inválida.');if(value&&name==='minigames'&&!MINIGAMES_SUPPORTED)throw new Error('Assistência de minigames indisponível nesta versão do jogo.');if(value&&name==='basket'&&!BASKETBALL_SUPPORTED)throw new Error('Assistência de basquete indisponível nesta versão do jogo.');}
   else if(name==='speed'){if(![1,2,5,10,20].includes(value))throw new Error('Velocidade inválida.');}
   else if(name==='addmoney'){if(!Number.isInteger(value)||value<1||value>10000000)throw new Error('Informe de 1 a 10.000.000.');}
   else if(name==='skill'){if(!value||!skills.includes(value.name)||!Number.isInteger(value.value)||value.value<0||value.value>100)throw new Error('Habilidade ou nível inválido.');}
@@ -182,7 +183,7 @@ function hotkeys(s){
         if(code===0x78){const speeds=[1,2,5,10,20];execute('speed',speeds[(speeds.indexOf(options.speed)+1)%speeds.length],s);}
         if(code===0x79)execute('health',!options.freezeHealth,s);
         if(MINIGAMES_SUPPORTED&&code===0x7a)execute('minigames',!options.autoMinigames,s);
-        if(MINIGAMES_SUPPORTED&&code===0x7b)execute('basket',!options.autoBasket,s);
+        if(BASKETBALL_SUPPORTED&&code===0x7b)execute('basket',!options.autoBasket,s);
       }catch(e){send({kind:'error',message:e.message});}
     }else if(!down)heldKeys.delete(code);
   }

@@ -75,7 +75,8 @@ Este guia ensina, passo a passo, **como instalar, usar, auditar e compilar** o *
 | **Restaurar necessidades** | Enche as 6 necessidades uma única vez | Ação pontual sem manter travado. |
 | **Manter saúde cheia** | Mantém a saúde em `100` durante as atualizações | Efeito temporário enquanto marcado e conectado. |
 | **Velocidade do relógio** | Multiplica a passagem do relógio: `1×`, `2×`, `5×`, `10×` ou `20×` | Só multiplica ticks normais de 1 segundo (`TimeManager.Update` → `UpdateGameSecond`), respeitando pausas e transições de cena. |
-| **Minigames e basquete** | *(Desativado nesta build)* | Desabilitado na v1.1.28 até revalidação dos endereços nativos (RVAs). |
+| **Basquete (arremessos)** | Faz você acertar arremessos na rua, partidas e lances livres | Reativado na build `25632131`: mova e arremesse normalmente; os outros minigames continuam desativados. |
+| **Demais minigames** | *(Desativado nesta build)* | Desabilitado na v1.1.28 até revalidação dos endereços nativos (RVAs). |
 
 ---
 
@@ -90,7 +91,8 @@ Mantenha **`Ctrl + Alt`** pressionados com a janela de *To Pixelia* em foco e ap
 | `Ctrl + Alt + F8` | Define **todas as 16 habilidades para 100** |
 | `Ctrl + Alt + F9` | Alterna velocidade do relógio: `1× → 2× → 5× → 10× → 20×` |
 | `Ctrl + Alt + F10` | Liga/desliga **Manter saúde cheia** |
-| `Ctrl + Alt + F11 / F12` | Desativados nesta atualização (não alteram o jogo) |
+| `Ctrl + Alt + F11` | Desativado nesta atualização (não altera o jogo) |
+| `Ctrl + Alt + F12` | Liga/desliga **Acertar arremessos de basquete** |
 
 > [!NOTE]
 > Em alguns notebooks, as teclas `F6`–`F12` exigem segurar também a tecla **`Fn`** (`Ctrl + Alt + Fn + F7`).
@@ -162,4 +164,4 @@ O script executa `python src\build.py`, copia a documentação/licenças/fontes,
 .\PixeliaLivre\PixeliaLivre.exe --self-test
 Get-Content .\PixeliaLivre\self-test.json
 ```
-Esse comando valida a abertura sem erros do app Tkinter, o carregamento de Tcl/Tk e a presença de `agent.js`, `minigames.js` e `compatibility.json` dentro de `_internal\`.
+Esse comando valida a abertura sem erros do app Tkinter, o carregamento de Tcl/Tk e a presença de `agent.js`, `basketball.js`, `minigames.js` e `compatibility.json` dentro de `_internal\`.

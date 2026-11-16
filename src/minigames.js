@@ -1,6 +1,7 @@
 // Legacy hook definitions; these are not loaded by the current game-build manifest.
 // Project credit: n3urom4nc3r
 // Legacy hooks for Steam build 23486352. Do not load on newer builds without RVA revalidation.
+// Note: Basketball shot hooks were revalidated for v1.1.28 and moved to basketball.js.
 function miniEnabled(basket=false){
   return !closed && Date.now()-lease<=5000 && (basket?options.autoBasket:options.autoMinigames);
 }
@@ -15,9 +16,6 @@ function miniProbe(cn,mn,rva,mnemonic,operands,change,basket=false){
     try{change(this.context);}catch(e){fault(e);}
   }));
 }
-// These operands are local success thresholds, never the opponent's score or skill.
-miniProbe('Player_Basketball','Player_ShotTaken',0x60f478,'movd','xmm0, edi',c=>{c.edi=ptr(0x80000000);},true);
-miniProbe('StreetBasketballPlayer','Player_ShotTaken',0x52ec36,'movd','xmm0, edi',c=>{c.edi=ptr(0x80000000);},true);
 
 function miniHook(cn,mn,argc,enter,leave){
   const c=cls(cn),m=method(c,mn,argc);
@@ -133,11 +131,6 @@ function pulse(cn,activeName,actionName,turnName){
 pulse('MG_BathManager','bathTime','UsingBath_CONTROLLER','bathRightLeftTurn');
 pulse('MG_TreadmillManager','treadmillTime','RunOnTreadmill_CONTROLLER','liftRightLeftTurn');
 pulse('MG_BenchPressManager','benchPressTime','LiftWeight_CONTROLLER','liftRightLeftTurn');
-
-// Receive panel commands even while a special basketball scene owns the updates.
-for(const cn of ['Player_Basketball','StreetBasketballPlayer']){
-  hooks.push(Interceptor.attach(method(cls(cn),'Update',0).readPointer(),{onEnter(){frame();}}));
-}
 
 const unbox=api('object_unbox','pointer',['pointer']);
 const sliderActions=new Map();

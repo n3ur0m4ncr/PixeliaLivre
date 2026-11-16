@@ -6,6 +6,7 @@
   "unity": "2020.1.13f1",
   "architecture": "x86",
   "minigames_supported": false,
+  "basketball_supported": true,
   "sha256": {
     "GameAssembly.dll": "e3e4de497d31c8899e9441d23e8138462afab2b73e321f51bcd982b3545cdc07",
     "To Pixelia_Data/il2cpp_data/Metadata/global-metadata.dat": "beccf98791936d74975c20a5e9e63609eac990de6ca734873b9bd37cc1b07f88"

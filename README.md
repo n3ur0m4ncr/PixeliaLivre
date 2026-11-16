@@ -41,7 +41,8 @@ Painel desktop bilíngue (**Português / English**) em Python + Tkinter com inst
 | **Manter saúde cheia** | ✅ Disponível | Mantém `health` em `100` durante as atualizações do personagem. |
 | **Velocidade do relógio** | ✅ Disponível | `1×`, `2×`, `5×`, `10×` ou `20×` — multiplica apenas ticks normais de 1 segundo, respeitando pausas e transições. |
 | **Interface Bilíngue (PT / EN)** | ✅ Disponível | Botões **PT / EN** no canto superior direito preservando conexão e seleção atual. |
-| **Minigames e Basquete** | ⏸️ Desativado | Desativado nesta build até revalidação dos endereços nativos (RVAs) em `src/minigames.js`. |
+| **Basquete (arremessos)** | ✅ Reativado | Acerta arremessos na rua, partidas e lances livres (`src/basketball.js` revalidado na build `25632131`; atalho `Ctrl+Alt+F12`). |
+| **Demais Minigames** | ⏸️ Desativado | Desativado nesta build até revalidação dos endereços nativos (RVAs) em `src/minigames.js`. |
 
 > [!NOTE]
 > A faixa `0–100` do painel representa o intervalo aceito pela interface, não uma afirmação sobre o teto oficial de cada habilidade no jogo.
@@ -74,7 +75,8 @@ Com a janela do **To Pixelia** em foco, segure **`Ctrl + Alt`** e pressione:
 | `F8` | Definir as **16 habilidades para 100** |
 | `F9` | Alternar velocidade do relógio: `1× → 2× → 5× → 10× → 20×` |
 | `F10` | Ativar / desativar **Manter saúde cheia** |
-| `F11` / `F12` | Desativados nesta atualização (não alteram o jogo) |
+| `F11` | Desativado nesta atualização (não altera o jogo) |
+| `F12` | Ativar / desativar **Acertar arremessos de basquete** |
 
 *(Em alguns notebooks é necessário pressionar também a tecla **`Fn`**.)*
 
@@ -121,6 +123,7 @@ PixeliaLivre/
 ├── src/
 │   ├── agent.js                 # Agente Frida injetado no jogo (hooks IL2CPP + hotkeys)
 │   ├── backend.py               # Verificação SHA-256 do jogo, attach Frida e RPC
+│   ├── basketball.js            # Hooks de basquete revalidados para a build 25632131
 │   ├── bootstrap.py             # Download e extração verificada (SHA-256) do Frida
 │   ├── build.py                 # Configuração PyInstaller (--onedir --exclude-module frida)
 │   ├── compatibility.json       # Manifesto da build Steam 25632131 (v1.1.28)

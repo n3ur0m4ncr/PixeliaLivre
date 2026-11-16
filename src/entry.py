@@ -31,7 +31,7 @@ def main():
             app=create_app()
             app.withdraw()
             app.update_idletasks()
-            result={'package_startup':'passed','tkinter':'passed','tcl_library':app.tk.eval('info library'),'resources':all((BASE/n).is_file() for n in ['agent.js','minigames.js','compatibility.json']),'initial_state':app.backend.snapshot(),'gameplay_tested':False}
+            result={'package_startup':'passed','tkinter':'passed','tcl_library':app.tk.eval('info library'),'resources':all((BASE/n).is_file() for n in ['agent.js','basketball.js','minigames.js','compatibility.json']),'initial_state':app.backend.snapshot(),'gameplay_tested':False}
             app.destroy()
         except Exception as error:
             result={'package_startup':'failed','error':str(error),'gameplay_tested':False}

@@ -15,6 +15,7 @@ flowchart TD
     Bootstrap -->|Extrai em runtime/| Frida["frida / _frida.pyd"]
     Backend -->|frida.attach + script.load| Agent["src/agent.js<br/>Hooks IL2CPP + Hotkeys user32.dll + Lease 5s"]
     Agent <-->|Interceptor.attach / Memory| Game["To Pixelia.exe (x86)<br/>GameAssembly.dll / Assembly-CSharp.dll"]
+    Basket["src/basketball.js<br/>Hooks de basquete build 25632131"] -->|Carregado quando<br/>basketball_supported=true| Agent
     Legacy["src/minigames.js<br/>RVAs legados build 23486352"] -.->|Carregado apenas se<br/>minigames_supported=true| Agent
 ```
 
@@ -57,9 +58,10 @@ sequenceDiagram
 | [`src/backend.py`](../src/backend.py) | Consulta o caminho exato de `To Pixelia.exe` via `kernel32.dll`, valida hashes SHA-256 contra `compatibility.json`, injeta `agent.js` e grava diagnósticos em `PixeliaLivre.log`. |
 | [`src/bootstrap.py`](../src/bootstrap.py) | Faz o download verificado (HTTPS + whitelist PyPI + SHA-256 + proteção contra Zip Slip) do wheel `frida-17.2.17` para `runtime/frida-17.2.17/`. |
 | [`src/agent.js`](../src/agent.js) | Resolve APIs exportadas por `GameAssembly.dll` (`il2cpp_*`), valida classes e offsets de `Assembly-CSharp.dll`, anexa hooks em `Player.Update`, `TimeManager.Update`, `UIManager.Update` e `TimeManager.UpdateGameSecond`, além de gerenciar hotkeys via `user32.dll` e o *lease* de 5 segundos. |
-| [`src/minigames.js`](../src/minigames.js) | Definições de hooks legados para minigames e basquete (Steam build `23486352`). Só é concatenado ao script quando `"minigames_supported": true` no manifesto. |
-| [`src/compatibility.json`](../src/compatibility.json) | Manifesto declarando jogo, Steam App ID (`1954160`), versão (`1.1.28`), Steam build (`25632131`), flag `minigames_supported` (`false`) e hashes SHA-256 exigidos. |
-| [`src/build.py`](../src/build.py) | Script PyInstaller (`--onedir --windowed --exclude-module frida`) que empacota `PixeliaLivre.exe` com `agent.js`, `minigames.js`, `compatibility.json` e `python3.dll`. |
+| [`src/basketball.js`](../src/basketball.js) | Hooks revalidados para a build `25632131` em `Player_Basketball` (`0x60cb6e`) e `StreetBasketballPlayer` (`0x52c79a`), garantindo acertos de arremessos quando `options.autoBasket` está ativo e mantendo o loop `frame()` ativo nas cenas de basquete. |
+| [`src/minigames.js`](../src/minigames.js) | Definições de hooks legados para os demais minigames (Steam build `23486352`). Só é concatenado ao script quando `"minigames_supported": true` no manifesto. |
+| [`src/compatibility.json`](../src/compatibility.json) | Manifesto declarando jogo, Steam App ID (`1954160`), versão (`1.1.28`), Steam build (`25632131`), flags `minigames_supported` (`false`) e `basketball_supported` (`true`) e hashes SHA-256 exigidos. |
+| [`src/build.py`](../src/build.py) | Script PyInstaller (`--onedir --windowed --exclude-module frida`) que empacota `PixeliaLivre.exe` com `agent.js`, `basketball.js`, `minigames.js`, `compatibility.json` e `python3.dll`. |
 
 ---
 

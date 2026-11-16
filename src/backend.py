@@ -99,8 +99,12 @@ class Backend:
             try:
                 self.agent_error = None
                 mini_supported = bool(self.manifest.get('minigames_supported', True))
-                source = (BASE / 'agent.js').read_text(encoding='utf8').replace(
-                    '__MINIGAMES_SUPPORTED__', 'true' if mini_supported else 'false')
+                basket_supported = bool(self.manifest.get('basketball_supported', mini_supported))
+                source = ((BASE / 'agent.js').read_text(encoding='utf8')
+                          .replace('__MINIGAMES_SUPPORTED__', 'true' if mini_supported else 'false')
+                          .replace('__BASKETBALL_SUPPORTED__', 'true' if basket_supported else 'false'))
+                if basket_supported:
+                    source += '\n' + (BASE / 'basketball.js').read_text(encoding='utf8')
                 if mini_supported:
                     source += '\n' + (BASE / 'minigames.js').read_text(encoding='utf8')
                 script = session.create_script(source)

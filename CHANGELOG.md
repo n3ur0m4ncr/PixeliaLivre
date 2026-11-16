@@ -2,6 +2,15 @@
 
 Todas as alterações relevantes do **Pixelia Livre** são documentadas neste arquivo.
 
+## [v1.1.28.1] - 2026-11-16
+
+### Adicionado / Alterado
+- **Basquete reativado para v1.1.28 (Steam build `25632131`):** novos RVAs verificados na `GameAssembly.dll` (`Player_Basketball.Player_ShotTaken @ 0x60cb6e` e `StreetBasketballPlayer.Player_ShotTaken @ 0x52c79a`) extraídos para `src/basketball.js`.
+- Adicionada flag independente `"basketball_supported": true` em `src/compatibility.json`, permitindo habilitar o controle de basquete e o atalho `Ctrl+Alt+F12` enquanto os demais minigames (`"minigames_supported": false`) permanecem desativados com segurança.
+- Atualizados `src/agent.js`, `src/backend.py`, `src/panel.py`, `src/entry.py` e `src/build.py` para suportar e empacotar `src/basketball.js`.
+
+---
+
 ## [v1.1.28] - 2026-10-31
 
 ### Compatibilidade

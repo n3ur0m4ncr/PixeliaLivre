@@ -58,8 +58,16 @@ TEXT_EN = {
         "Start activities as usual. In basketball, move and shoot yourself.\nExperimental features; see README for coverage.",
     "Assistência de minigames e basquete desativada nesta atualização; os outros controles estão disponíveis.":
         "Minigame and basketball assistance is disabled for this game update; other controls are available.",
+    "Basquete ativo (mova e arremesse você mesmo; válido para rua, partidas e lances livres).\nDemais minigames continuam desativados nesta build.":
+        "Basketball active (move and shoot yourself; works in street, matches, and free throws).\nOther minigames remain disabled for this build.",
     "F11/F12 e a assistência de minigames estão desativados nesta build.":
         "F11/F12 and minigame assistance are disabled for this build.",
+    "Uso local, para um jogador. Dinheiro e habilidades permanecem ao salvar o jogo.\nOs efeitos começam desligados. Desconectar interrompe a manutenção e a aceleração.\nNo jogo: Ctrl+Alt+F6 necessidades • F7 +10 mil • F8 habilidades 100\nCtrl+Alt+F9 velocidade • F10 saúde • F12 basquete.\nF11 e a assistência geral de minigames estão desativados nesta build.":
+        "Local single-player use. Money and skills can persist when the game saves.\nEffects start disabled. Disconnecting stops maintenance and time acceleration.\nIn game: Ctrl+Alt+F6 needs • F7 +10,000 • F8 all skills to 100\nCtrl+Alt+F9 speed • F10 health • F12 basketball.\nF11 and general minigame assistance are disabled for this build.",
+    "Assistência de minigames indisponível nesta versão do jogo.":
+        "Minigame assistance is unavailable for this game version.",
+    "Assistência de basquete indisponível nesta versão do jogo.":
+        "Basketball assistance is unavailable for this game version.",
     "Uso local, para um jogador. Dinheiro e habilidades permanecem ao salvar o jogo.\nOs efeitos começam desligados. Desconectar interrompe a manutenção e a aceleração.\nNo jogo: Ctrl+Alt+F6 necessidades • F7 +10 mil • F8 habilidades 100\nCtrl+Alt+F9 velocidade • F10 saúde. • F11 minigames • F12 basquete.":
         "Local single-player use. Money and skills can persist when the game saves.\nEffects start disabled. Disconnecting stops maintenance and time acceleration.\nIn game: Ctrl+Alt+F6 needs • F7 +10,000 • F8 all skills to 100\nCtrl+Alt+F9 speed • F10 health. • F11 minigames • F12 basketball.",
     "Uso local, para um jogador. Dinheiro e habilidades permanecem ao salvar o jogo.\nOs efeitos começam desligados. Desconectar interrompe a manutenção e a aceleração.\nNo jogo: Ctrl+Alt+F6 necessidades • F7 +10 mil • F8 habilidades 100\nCtrl+Alt+F9 velocidade • F10 saúde.\nF11/F12 e a assistência de minigames estão desativados nesta build.":
@@ -136,6 +144,7 @@ class App(tk.Tk):
         super().__init__()
         self.backend = backend if backend is not None else Backend()
         self.minigames_supported = bool(self.backend.manifest.get("minigames_supported", True))
+        self.basketball_supported = bool(self.backend.manifest.get("basketball_supported", self.minigames_supported))
         self.language = "pt"
         self.title("Pixelia Livre")
         self.geometry("780x760")
@@ -184,6 +193,8 @@ class App(tk.Tk):
                     return en + text[len(pt):]
             if text.startswith("Minigame sem implementação:"):
                 return text.replace("Minigame sem implementação:", "Minigame is unavailable:", 1)
+            if text.startswith("Verificação do basquete falhou:"):
+                return text.replace("Verificação do basquete falhou:", "Basketball verification failed:", 1)
             if ": digite um número inteiro entre " in text:
                 label, bounds = text.split(": digite um número inteiro entre ", 1)
                 return f"{self._tx(label)}: enter a whole number from " + bounds.replace(" e ", " to ")
@@ -396,23 +407,28 @@ class App(tk.Tk):
                     color="muted").pack(fill="x", pady=(7, 0))
 
         games = self._card(self.body, 'Minigames e basquete', 'ACERTOS E ASSISTÊNCIA')
-        for text, variable, name in (
-            ('Acertos e assistência nos minigames', self.minigames_value, 'minigames'),
-            ('Acertar arremessos de basquete (rua, partidas e lances livres)', self.basket_value, 'basket'),
+        for text, variable, name, supported in (
+            ('Acertos e assistência nos minigames', self.minigames_value, 'minigames', self.minigames_supported),
+            ('Acertar arremessos de basquete (rua, partidas e lances livres)', self.basket_value, 'basket', self.basketball_supported),
         ):
             toggle = tk.Checkbutton(
                 games, text=self._tx(text), variable=variable,
                 command=lambda n=name, v=variable: self._command(n, v.get()),
-                bg=COLORS['card'], fg=COLORS['text'], selectcolor=COLORS['card'],
-                activebackground=COLORS['card'], activeforeground=COLORS['text'],
-                font=('Segoe UI', 10), anchor='w',
+                bg=COLORS['card'], fg=COLORS['text'], selectcolor=COLORS['field'],
+                activebackground=COLORS['card'], activeforeground=COLORS['green'],
+                disabledforeground='#738797', bd=0, highlightthickness=0,
+                cursor='hand2', font=('Segoe UI', 10), anchor='w',
             )
             toggle.pack(fill='x', pady=4)
-            self._controls.append((toggle, 'normal' if self.minigames_supported else 'disabled'))
-        game_note = ('Inicie a atividade normalmente. No basquete, mova e arremesse você mesmo.\n'
-                     'Recursos experimentais; consulte a cobertura no LEIA-ME.'
-                     if self.minigames_supported else
-                     'Assistência de minigames e basquete desativada nesta atualização; os outros controles estão disponíveis.')
+            self._controls.append((toggle, 'normal' if supported else 'disabled'))
+        if self.minigames_supported and self.basketball_supported:
+            game_note = ('Inicie a atividade normalmente. No basquete, mova e arremesse você mesmo.\n'
+                         'Recursos experimentais; consulte a cobertura no LEIA-ME.')
+        elif self.basketball_supported:
+            game_note = ('Basquete ativo (mova e arremesse você mesmo; válido para rua, partidas e lances livres).\n'
+                         'Demais minigames continuam desativados nesta build.')
+        else:
+            game_note = 'Assistência de minigames e basquete desativada nesta atualização; os outros controles estão disponíveis.'
         self._label(games, game_note,
                     size=9, color='muted').pack(fill='x', pady=(5, 0))
 
@@ -420,10 +436,14 @@ class App(tk.Tk):
             "Uso local, para um jogador. Dinheiro e habilidades permanecem ao salvar o jogo.\n"
             "Os efeitos começam desligados. Desconectar interrompe a manutenção e a aceleração.\n"
             "No jogo: Ctrl+Alt+F6 necessidades • F7 +10 mil • F8 habilidades 100\n"
-            "Ctrl+Alt+F9 velocidade • F10 saúde."
+            "Ctrl+Alt+F9 velocidade • F10 saúde"
         )
-        footer_text += (" • F11 minigames • F12 basquete." if self.minigames_supported else
-                        "\nF11/F12 e a assistência de minigames estão desativados nesta build.")
+        if self.minigames_supported and self.basketball_supported:
+            footer_text += ". • F11 minigames • F12 basquete."
+        elif self.basketball_supported:
+            footer_text += " • F12 basquete.\nF11 e a assistência geral de minigames estão desativados nesta build."
+        else:
+            footer_text += ".\nF11/F12 e a assistência de minigames estão desativados nesta build."
         self.footer = self._label(
             self.body,
             footer_text,

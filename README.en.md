@@ -28,7 +28,8 @@ Bilingual (**Português / English**) desktop control panel built with Python + T
 | **Keep health full** | ✅ Available | Keeps `health` at `100` during player updates. |
 | **Clock speed** | ✅ Available | `1×`, `2×`, `5×`, `10×`, or `20×` — only multiplies ordinary 1-second ticks while respecting pauses and scene transitions. |
 | **Bilingual UI (PT / EN)** | ✅ Available | Switch via **PT / EN** buttons at the top right while keeping connection and skill selection. |
-| **Minigames & Basketball** | ⏸️ Disabled | Temporarily disabled for this build until native RVAs in `src/minigames.js` are revalidated. |
+| **Basketball (shots)** | ✅ Re-enabled | Makes street, match, and free-throw shots (`src/basketball.js` revalidated for build `25632131`; hotkey `Ctrl+Alt+F12`). |
+| **Other Minigames** | ⏸️ Disabled | Temporarily disabled for this build until native RVAs in `src/minigames.js` are revalidated. |
 
 ---
 
@@ -55,7 +56,8 @@ Hold **`Ctrl + Alt`** while *To Pixelia* is focused, then press:
 | `F8` | Set **all 16 skills to 100** |
 | `F9` | Cycle clock speed: `1× → 2× → 5× → 10× → 20×` |
 | `F10` | Toggle **Keep health full** |
-| `F11` / `F12` | Disabled for this build (no effect) |
+| `F11` | Disabled for this build (no effect) |
+| `F12` | Toggle **Make basketball shots** |
 
 *(Some laptops also require holding **`Fn`**.)*
 
