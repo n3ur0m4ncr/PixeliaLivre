@@ -48,6 +48,11 @@ New-Item -ItemType Directory -Force -Path $StageSrc | Out-Null
 Get-ChildItem -Path $SrcDir -File | ForEach-Object {
     Copy-Item -Path $_.FullName -Destination $StageSrc -Force
 }
+Copy-Item -Path (Join-Path $SrcDir 'locales') -Destination (Join-Path $StageSrc 'locales') -Recurse -Force
+
+$StageLocales = Join-Path $StageDir 'locales'
+New-Item -ItemType Directory -Force -Path $StageLocales | Out-Null
+Copy-Item -Path (Join-Path $SrcDir 'locales\_template.json') -Destination (Join-Path $StageLocales '_template.json') -Force
 
 $StageLic = Join-Path $StageDir 'Licencas'
 New-Item -ItemType Directory -Force -Path $StageLic | Out-Null

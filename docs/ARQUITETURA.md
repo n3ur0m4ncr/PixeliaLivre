@@ -54,7 +54,8 @@ sequenceDiagram
 | Arquivo | Papel no Projeto |
 | --- | --- |
 | [`src/entry.py`](../src/entry.py) | Inicializa a aplicação Tkinter, aplica fallback para `C:/Python312/tcl` caso o ambiente restrinja scripts Tcl em *Documentos* e implementa `--self-test`. |
-| [`src/panel.py`](../src/panel.py) | Constrói toda a UI bilíngue (**PT** / **EN**), executa chamadas ao backend em thread separada (`pixelia-worker`) e mantém a UI responsiva com filas `queue.Queue`. |
+| [`src/panel.py`](../src/panel.py) | Constrói toda a UI multilíngue via [`src/i18n.py`](../src/i18n.py), executa chamadas ao backend em thread separada (`pixelia-worker`) e mantém a UI responsiva com filas `queue.Queue`. |
+| [`src/i18n.py`](../src/i18n.py) | Detecta o idioma de exibição do Windows (`GetUserPreferredUILanguages` / `GetUserDefaultUILanguage`), carrega os pacotes em `src/locales/` e traduções externas em `locales/` ao lado do `.exe`, e traduz textos estáticos, habilidades, números e mensagens dinâmicas com fallback universal em inglês. |
 | [`src/backend.py`](../src/backend.py) | Consulta o caminho exato de `To Pixelia.exe` via `kernel32.dll`, valida hashes SHA-256 contra `compatibility.json`, injeta `agent.js` e grava diagnósticos em `PixeliaLivre.log`. |
 | [`src/bootstrap.py`](../src/bootstrap.py) | Faz o download verificado (HTTPS + whitelist PyPI + SHA-256 + proteção contra Zip Slip) do wheel `frida-17.2.17` para `runtime/frida-17.2.17/`. |
 | [`src/agent.js`](../src/agent.js) | Resolve APIs exportadas por `GameAssembly.dll` (`il2cpp_*`), valida classes e offsets de `Assembly-CSharp.dll`, anexa hooks em `Player.Update`, `TimeManager.Update`, `UIManager.Update` e `TimeManager.UpdateGameSecond`, além de gerenciar hotkeys via `user32.dll` e o *lease* de 5 segundos. |

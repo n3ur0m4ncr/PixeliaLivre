@@ -5,10 +5,11 @@
 [![Python](https://img.shields.io/badge/Python-3.12-304356?style=flat-square)](#run-from-source-or-build)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
-Bilingual (**Português / English**) desktop control panel built with Python + Tkinter and **Frida (IL2CPP)** instrumentation for single-player *To Pixelia* (Steam, Windows).
+Multilingual desktop control panel with **automatic Windows display language detection** (**13 built-in languages** + extensible external JSON locales) built with Python + Tkinter and **Frida (IL2CPP)** instrumentation for single-player *To Pixelia* (Steam, Windows).
 
-> 📖 **Documentation (Portuguese / Technical Docs):**
+> 📖 **Documentation:**
 > - [**Step-by-Step Guide (PT-BR)**](docs/GUIA-PASSO-A-PASSO.md)
+> - [**Universal Language & Community Translations Guide (PT-BR)**](docs/TRADUCOES.md)
 > - [**VirusTotal False Positive & File Drop Explanation (PT-BR)**](docs/FALSO-POSITIVO-VIRUSTOTAL.md)
 > - [**Internal Architecture & Mermaid Diagrams (PT-BR)**](docs/ARQUITETURA.md)
 > - [**Validation Report & Game Hashes (PT-BR)**](docs/VALIDACAO.md)
@@ -27,7 +28,7 @@ Bilingual (**Português / English**) desktop control panel built with Python + T
 | **Refill needs** | ✅ Available | Refills all 6 needs once on demand. |
 | **Keep health full** | ✅ Available | Keeps `health` at `100` during player updates. |
 | **Clock speed** | ✅ Available | `1×`, `2×`, `5×`, `10×`, or `20×` — only multiplies ordinary 1-second ticks while respecting pauses and scene transitions. |
-| **Bilingual UI (PT / EN)** | ✅ Available | Switch via **PT / EN** buttons at the top right while keeping connection and skill selection. |
+| **Universal Language (Auto Windows)** | ✅ Available | Automatically detects your Windows display language (`pt`, `en`, `es`, `fr`, `de`, `it`, `pl`, `ru`, `tr`, `ja`, `ko`, `zh-Hans`, `zh-Hant`, `en` fallback) and loads custom JSON files from `locales/`. |
 | **Basketball (shots)** | ✅ Re-enabled | Makes street, match, and free-throw shots (`src/basketball.js` revalidated for build `25632131`; hotkey `Ctrl+Alt+F12`). |
 | **Other Minigames** | ⏸️ Disabled | Temporarily disabled for this build until native RVAs in `src/minigames.js` are revalidated. |
 

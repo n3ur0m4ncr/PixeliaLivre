@@ -11,117 +11,14 @@ from tkinter import ttk
 from typing import Any, Callable
 
 from backend import Backend
+from i18n import I18n
 
 
-SKILLS = {
-    "Computação": "computer",
-    "Escrita": "writing",
-    "Culinária": "cooking",
-    "Violão": "guitar",
-    "Piano": "piano",
-    "Pintura": "painting",
-    "Bateria": "drumming",
-    "Canto": "singing",
-    "Conversação": "conversation",
-    "Carreira de modelo": "modelling",
-    "Basquete": "basketball",
-    "Comédia": "comedy",
-    "Romance": "romance",
-    "Arrombamento": "lockpicking",
-    "Direção": "driving",
-    "Agricultura": "farming",
-}
-SKILLS_EN = {
-    "Computação": "Computing", "Escrita": "Writing", "Culinária": "Cooking",
-    "Violão": "Guitar", "Piano": "Piano", "Pintura": "Painting", "Bateria": "Drums",
-    "Canto": "Singing", "Conversação": "Conversation", "Carreira de modelo": "Modeling",
-    "Basquete": "Basketball", "Comédia": "Comedy", "Romance": "Romance",
-    "Arrombamento": "Lockpicking", "Direção": "Driving", "Agricultura": "Farming",
-}
-TEXT_EN = {
-    "DESCONECTADO": "DISCONNECTED", "Seu ritmo. Suas possibilidades.": "Your pace. Your possibilities.",
-    "Conectar ao jogo": "Connect to game", "Desconectar": "Disconnect", "Abrir pela Steam": "Launch through Steam",
-    "Abra To Pixelia, carregue seu personagem e conecte o painel.": "Open To Pixelia, load your character, then connect the panel.",
-    "Dinheiro": "Money", "ALTERA O PERSONAGEM": "CHARACTER SETTINGS", "Saldo: —": "Balance: —",
-    "Adicionar dinheiro": "Add money", "Habilidades": "Skills", "16 HABILIDADES · NÍVEIS 0–100": "16 SKILLS · LEVELS 0–100",
-    "Atual: —": "Current: —", "Aplicar nível": "Set level", "Definir todas de uma vez": "Set every skill", "Aplicar a todas": "Set all",
-    "Atributos": "Attributes", "INTELIGÊNCIA · NÍVEL 0–100": "INTELLIGENCE · LEVEL 0–100",
-    "Inteligência atual: —": "Current intelligence: —", "Definir inteligência": "Set intelligence",
-    "Tempo e bem-estar": "Time and wellbeing", "EFEITOS TEMPORÁRIOS": "TEMPORARY EFFECTS",
-    "Necessidades não caem": "Needs do not decrease", "Manter saúde cheia": "Keep health full",
-    "Velocidade do relógio": "Clock speed", "Restaurar necessidades": "Refill needs",
-    "A velocidade escolhida é aplicada ao selecionar.": "The selected speed takes effect immediately.",
-    "Minigames e basquete": "Minigames and basketball", "ACERTOS E ASSISTÊNCIA": "SUCCESS AND ASSISTANCE",
-    "Acertos e assistência nos minigames": "Minigame success and assistance",
-    "Acertar arremessos de basquete (rua, partidas e lances livres)": "Make basketball shots (street, matches, and free throws)",
-    "Inicie a atividade normalmente. No basquete, mova e arremesse você mesmo.\nRecursos experimentais; consulte a cobertura no LEIA-ME.":
-        "Start activities as usual. In basketball, move and shoot yourself.\nExperimental features; see README for coverage.",
-    "Assistência de minigames e basquete desativada nesta atualização; os outros controles estão disponíveis.":
-        "Minigame and basketball assistance is disabled for this game update; other controls are available.",
-    "Basquete ativo (mova e arremesse você mesmo; válido para rua, partidas e lances livres).\nDemais minigames continuam desativados nesta build.":
-        "Basketball active (move and shoot yourself; works in street, matches, and free throws).\nOther minigames remain disabled for this build.",
-    "F11/F12 e a assistência de minigames estão desativados nesta build.":
-        "F11/F12 and minigame assistance are disabled for this build.",
-    "Uso local, para um jogador. Dinheiro e habilidades permanecem ao salvar o jogo.\nOs efeitos começam desligados. Desconectar interrompe a manutenção e a aceleração.\nNo jogo: Ctrl+Alt+F6 necessidades • F7 +10 mil • F8 habilidades 100\nCtrl+Alt+F9 velocidade • F10 saúde • F12 basquete.\nF11 e a assistência geral de minigames estão desativados nesta build.":
-        "Local single-player use. Money and skills can persist when the game saves.\nEffects start disabled. Disconnecting stops maintenance and time acceleration.\nIn game: Ctrl+Alt+F6 needs • F7 +10,000 • F8 all skills to 100\nCtrl+Alt+F9 speed • F10 health • F12 basketball.\nF11 and general minigame assistance are disabled for this build.",
-    "Assistência de minigames indisponível nesta versão do jogo.":
-        "Minigame assistance is unavailable for this game version.",
-    "Assistência de basquete indisponível nesta versão do jogo.":
-        "Basketball assistance is unavailable for this game version.",
-    "Uso local, para um jogador. Dinheiro e habilidades permanecem ao salvar o jogo.\nOs efeitos começam desligados. Desconectar interrompe a manutenção e a aceleração.\nNo jogo: Ctrl+Alt+F6 necessidades • F7 +10 mil • F8 habilidades 100\nCtrl+Alt+F9 velocidade • F10 saúde. • F11 minigames • F12 basquete.":
-        "Local single-player use. Money and skills can persist when the game saves.\nEffects start disabled. Disconnecting stops maintenance and time acceleration.\nIn game: Ctrl+Alt+F6 needs • F7 +10,000 • F8 all skills to 100\nCtrl+Alt+F9 speed • F10 health. • F11 minigames • F12 basketball.",
-    "Uso local, para um jogador. Dinheiro e habilidades permanecem ao salvar o jogo.\nOs efeitos começam desligados. Desconectar interrompe a manutenção e a aceleração.\nNo jogo: Ctrl+Alt+F6 necessidades • F7 +10 mil • F8 habilidades 100\nCtrl+Alt+F9 velocidade • F10 saúde.\nF11/F12 e a assistência de minigames estão desativados nesta build.":
-        "Local single-player use. Money and skills can persist when the game saves.\nEffects start disabled. Disconnecting stops maintenance and time acceleration.\nIn game: Ctrl+Alt+F6 needs • F7 +10,000 • F8 all skills to 100\nCtrl+Alt+F9 speed • F10 health.\nF11/F12 and minigame assistance are disabled for this build.",
-    "Uso local, para um jogador. Dinheiro e habilidades permanecem ao salvar o jogo.\nOs efeitos começam desligados. Desconectar interrompe a manutenção e a aceleração.\nNo jogo: Ctrl+Alt+F6 necessidades • F7 +10 mil • F8 habilidades 100\nCtrl+Alt+F9 velocidade • F10 saúde • F11 minigames • F12 basquete.":
-        "Local single-player use. Money and skills can persist when the game saves.\nEffects start disabled. Disconnecting stops maintenance and time acceleration.\nIn game: Ctrl+Alt+F6 needs • F7 +10,000 • F8 all skills to 100\nCtrl+Alt+F9 speed • F10 health • F11 minigames • F12 basketball.",
-    "ENCERRANDO": "CLOSING", "PROCESSANDO…": "PROCESSING…", "CONECTADO": "CONNECTED",
-    "AGUARDANDO PERSONAGEM": "WAITING FOR CHARACTER", "Aguardando o jogo e seu personagem…": "Waiting for the game and your character…",
-    "Conectado. Alterações disponíveis.": "Connected. Options are available.",
-    "Conectado. Aguardando o personagem…": "Connected. Waiting for your character…",
-    "Não foi possível conectar ao jogo.": "Could not connect to the game.", "Alteração aplicada.": "Change applied.",
-    "Aguardando o carregamento da partida.": "Waiting for the game session to load.",
-    "Aguarde o carregamento da partida.": "Wait for the game session to load.",
-    "Aguarde o comando anterior.": "Please wait for the previous command.",
-    "O jogo não respondeu. O comando foi cancelado.": "The game did not respond. The command was canceled.",
-    "O jogo ainda está iniciando. Tente conectar novamente.": "The game is still starting. Try connecting again.",
-    "Os componentes de To Pixelia ainda não foram carregados.": "To Pixelia components have not loaded yet.",
-    "Entre em uma partida para habilitar o painel.": "Load a game to enable the panel.",
-    "Conectado ao To Pixelia. Opções prontas.": "Connected to To Pixelia. Options are ready.",
-    "Entre em uma partida e aguarde o carregamento.": "Load a game and wait for it to finish loading.",
-    "Esta edição exige To Pixelia para Windows, 32 bits.": "This build requires the 32-bit Windows version of To Pixelia.",
-    "Versão incompatível. Atualize o mod para a versão atual do jogo.": "Unsupported game version. Update the mod for the current game version.",
-    "Opção inválida.": "Invalid option.", "Velocidade inválida.": "Invalid speed.",
-    "Informe de 1 a 10.000.000.": "Enter a value from 1 to 10,000,000.",
-    "Habilidade ou nível inválido.": "Invalid skill or level.", "Informe um nível de 0 a 100.": "Enter a level from 0 to 100.",
-    "Atributo ou nível inválido.": "Invalid attribute or level.", "Comando desconhecido.": "Unknown command.",
-    "Limite de dinheiro atingido (2 bilhões).": "Money limit reached (2 billion).",
-    "Valor aplicado; reabra a tela de atributos para atualizar a interface.": "Value applied; reopen the attributes screen to refresh the display.",
-    "Atalhos indisponíveis; utilize o painel.": "Hotkeys are unavailable; use the panel.",
-    "Aguardando uma partida carregada.": "Waiting for a loaded game session.",
-    "O jogo está carregando ou sem atualizar. Aguarde.": "The game is loading or paused. Please wait.",
-    "Não foi possível validar o controle do relógio nesta versão.": "Could not verify clock control for this game version.",
-    "O jogo recusou a atualização da interface.": "The game rejected the interface update.",
-    "Aguarde o jogo e seu personagem…": "Waiting for the game and your character…",
-    "Jogo desconectado. Abra-o e conecte novamente.": "Game disconnected. Reopen it and reconnect.",
-    "To Pixelia não está aberto. Abra o jogo pela Steam primeiro.": "To Pixelia is not open. Launch the game through Steam first.",
-    "Há mais de uma cópia de To Pixelia aberta. Deixe apenas uma.": "More than one copy of To Pixelia is open. Leave only one running.",
-    "Processo incompatível.": "Unsupported process.",
-    "Conecte o painel ao jogo primeiro.": "Connect the panel to the game first.",
-    "Dinheiro": "Money", "Nível da habilidade": "Skill level",
-    "Nível das habilidades": "Skill level", "Inteligência": "Intelligence",
-    "Falha ao iniciar o mod.": "Could not start the mod.",
-    "O mod foi desconectado pelo jogo.": "The game disconnected the mod.",
-    "O jogo não está atualizando. Aguarde ou reconecte.": "The game is not updating. Wait or reconnect.",
-    "O jogo ainda está iniciando. Tente conectar novamente.": "The game is still starting. Try connecting again.",
-    "Aplicando alteração ao personagem…": "Applying change to your character…",
-    "Solicitando abertura de To Pixelia pela Steam…": "Launching To Pixelia through Steam…",
-    "Abertura solicitada à Steam. Carregue seu personagem e conecte o painel.": "Launch requested through Steam. Load your character and connect the panel.",
-    "Conectando. Na primeira vez, será baixado um componente de 42 MB. Aguarde…": "Connecting. A 42 MB component downloads the first time. Please wait…",
-    "Desconectando e restaurando efeitos temporários…": "Disconnecting and restoring temporary effects…",
-    "Conectado. Aguardando o personagem…": "Connected. Waiting for your character…",
-    "Desconectado. Os efeitos temporários foram desativados.": "Disconnected. Temporary effects have been disabled.",
-    "Encerrando e desativando efeitos temporários…": "Closing and disabling temporary effects…",
-}
+SKILL_IDS = (
+    "computer", "writing", "cooking", "guitar", "piano", "painting",
+    "drumming", "singing", "conversation", "modelling", "basketball",
+    "comedy", "romance", "lockpicking", "driving", "farming",
+)
 
 COLORS = {
     "bg": "#101923",
@@ -140,15 +37,18 @@ COLORS = {
 class App(tk.Tk):
     """Interface com fila serial e atualização exclusiva pelo thread principal."""
 
-    def __init__(self, backend: Backend | None = None) -> None:
+    def __init__(self, backend: Backend | None = None, i18n: I18n | None = None) -> None:
         super().__init__()
         self.backend = backend if backend is not None else Backend()
+        self.i18n = i18n if i18n is not None else I18n()
         self.minigames_supported = bool(self.backend.manifest.get("minigames_supported", True))
         self.basketball_supported = bool(self.backend.manifest.get("basketball_supported", self.minigames_supported))
-        self.language = "pt"
-        self.title("Pixelia Livre")
-        self.geometry("780x760")
-        self.minsize(720, 620)
+        self.language_mode = "auto"
+        self.language = self.i18n.detected_language
+
+        self.title(self._tx("Pixelia Livre"))
+        self.geometry("820x780")
+        self.minsize(760, 640)
         self.configure(bg=COLORS["bg"])
         self._jobs: queue.Queue = queue.Queue()
         self._results: queue.Queue = queue.Queue()
@@ -162,13 +62,18 @@ class App(tk.Tk):
         self._controls: list[tuple[tk.Widget, str]] = []
         self._message_until = 0.0
         self._last_error = ""
+        self._status_raw = "Abra To Pixelia, carregue seu personagem e conecte o painel."
+        self._status_is_error = False
+        self._skill_id = SKILL_IDS[0]
+        self._lang_map: dict[str, str] = {}
 
         self.money_amount = tk.StringVar(value="10000")
-        self.skill_name = tk.StringVar(value=next(iter(SKILLS)))
+        self.language_choice = tk.StringVar()
+        self.skill_name = tk.StringVar(value=self.i18n.skill_label(self._skill_id, self.language))
         self.skill_value = tk.StringVar(value="100")
         self.all_skill_value = tk.StringVar(value="100")
         self.intelligence_value = tk.StringVar(value="100")
-        self.speed_value = tk.StringVar(value="1× — normal")
+        self.speed_value = tk.StringVar(value=self.i18n.pattern("speed_normal", self.language))
         self.needs_value = tk.BooleanVar(value=False)
         self.health_value = tk.BooleanVar(value=False)
         self.minigames_value = tk.BooleanVar(value=False)
@@ -184,34 +89,42 @@ class App(tk.Tk):
         self.after(1000, self._poll_snapshot)
 
     def _tx(self, text: str) -> str:
-        if self.language == "en":
-            if text in TEXT_EN:
-                return TEXT_EN[text]
-            for pt, en in (("Saldo: ", "Balance: "), ("Atual: ", "Current: "),
-                           ("Inteligência atual: ", "Current intelligence: ")):
-                if text.startswith(pt):
-                    return en + text[len(pt):]
-            if text.startswith("Minigame sem implementação:"):
-                return text.replace("Minigame sem implementação:", "Minigame is unavailable:", 1)
-            if text.startswith("Verificação do basquete falhou:"):
-                return text.replace("Verificação do basquete falhou:", "Basketball verification failed:", 1)
-            if ": digite um número inteiro entre " in text:
-                label, bounds = text.split(": digite um número inteiro entre ", 1)
-                return f"{self._tx(label)}: enter a whole number from " + bounds.replace(" e ", " to ")
-            if ": use um valor entre " in text:
-                label, bounds = text.split(": use um valor entre ", 1)
-                return f"{self._tx(label)}: enter a value from " + bounds.replace(" e ", " to ")
-            return text
-        return text
+        return self.i18n.translate(text, self.language)
+
+    def _language_options(self) -> tuple[list[str], str]:
+        detected_name = self.i18n.display_name(self.i18n.detected_language)
+        auto_label = self.i18n.pattern("auto_label", self.language, language=detected_name)
+        if not auto_label:
+            auto_label = f"Auto ({detected_name})"
+        options = [auto_label]
+        mapping = {auto_label: "auto"}
+        selected_display = auto_label
+        for code in self.i18n.available_codes():
+            display = f"{self.i18n.display_name(code)} [{code}]"
+            options.append(display)
+            mapping[display] = code
+            if self.language_mode == code:
+                selected_display = display
+        self._lang_map = mapping
+        return options, selected_display
+
+    def _on_language_select(self, event: tk.Event | None = None) -> None:
+        target = self._lang_map.get(self.language_choice.get())
+        if target:
+            self._set_language(target)
 
     def _set_language(self, language: str) -> None:
-        if language not in ("pt", "en") or language == self.language:
+        if language == "auto":
+            mode, resolved = "auto", self.i18n.detected_language
+        elif language in self.i18n.locales:
+            mode, resolved = language, language
+        else:
             return
-        skill_id = SKILLS.get(self.skill_name.get())
-        self.language = language
-        labels = SKILLS_EN if language == "en" else {name: name for name in SKILLS}
-        self.skill_name.set(next((label for name, label in labels.items()
-                                  if SKILLS[name] == skill_id), next(iter(labels.values()))))
+        if mode == self.language_mode and resolved == self.language:
+            return
+        self.language_mode = mode
+        self.language = resolved
+        self.skill_name.set(self.i18n.skill_label(self._skill_id, self.language))
         self.title(self._tx("Pixelia Livre"))
         self._build()
         self._show_values()
@@ -304,16 +217,16 @@ class App(tk.Tk):
         header = tk.Frame(self.body, bg=COLORS["bg"])
         header.pack(fill="x", pady=(0, 4))
         self._label(header, "Pixelia Livre", size=25, bold=True).pack(side="left")
-        language_row = tk.Frame(header, bg=COLORS["bg"])
-        language_row.pack(side="right", padx=(8, 10), pady=(6, 0))
-        for code, label in (("pt", "PT"), ("en", "EN")):
-            tk.Button(language_row, text=label, command=lambda c=code: self._set_language(c),
-                      relief="flat", bd=0, padx=8, pady=4, cursor="hand2",
-                      bg=COLORS["green"] if code == self.language else COLORS["field"],
-                      fg=COLORS["ink"] if code == self.language else COLORS["muted"],
-                      font=("Segoe UI", 9, "bold")).pack(side="left", padx=2)
         self.badge = self._label(header, "DESCONECTADO", size=9, bold=True, color="muted")
         self.badge.pack(side="right", pady=(8, 0))
+        lang_options, selected_lang = self._language_options()
+        self.language_choice.set(selected_lang)
+        self.language_combo = ttk.Combobox(
+            header, textvariable=self.language_choice, values=lang_options,
+            state="readonly", width=21, style="Pixel.TCombobox",
+        )
+        self.language_combo.pack(side="right", padx=(8, 12), pady=(4, 0))
+        self.language_combo.bind("<<ComboboxSelected>>", self._on_language_select)
         self._label(self.body, "Seu ritmo. Suas possibilidades.", size=11,
                     color="muted").pack(fill="x", pady=(0, 15))
 
@@ -326,8 +239,9 @@ class App(tk.Tk):
                                            control=False)
         self.launch_button.pack(side="left", padx=(10, 0))
         self.status_label = self._label(
-            self.body, "Abra To Pixelia, carregue seu personagem e conecte o painel.",
-            color="muted", justify="left", wraplength=690,
+            self.body, self._status_raw,
+            color="error" if self._status_is_error else "muted",
+            justify="left", wraplength=730,
         )
         self.status_label.pack(fill="x", pady=(0, 14))
 
@@ -342,13 +256,15 @@ class App(tk.Tk):
         skills = self._card(self.body, "Habilidades", "16 HABILIDADES · NÍVEIS 0–100")
         skill_row = tk.Frame(skills, bg=COLORS["card"])
         skill_row.pack(fill="x", pady=(0, 9))
-        labels = SKILLS_EN if self.language == "en" else {name: name for name in SKILLS}
+        skill_labels = [self.i18n.skill_label(sid, self.language) for sid in SKILL_IDS]
+        self._skill_label_to_id = dict(zip(skill_labels, SKILL_IDS))
+        self.skill_name.set(self.i18n.skill_label(self._skill_id, self.language))
         self.skill_combo = ttk.Combobox(skill_row, textvariable=self.skill_name,
-                                        values=list(labels.values()), state="readonly", width=19,
+                                        values=skill_labels, state="readonly", width=19,
                                         style="Pixel.TCombobox")
         self.skill_combo.pack(side="left")
         self._controls.append((self.skill_combo, "readonly"))
-        self.skill_combo.bind("<<ComboboxSelected>>", lambda event: self._show_skill())
+        self.skill_combo.bind("<<ComboboxSelected>>", lambda event: self._on_skill_select())
         self.current_skill_label = self._label(skill_row, "Atual: —", color="muted")
         self.current_skill_label.pack(side="left", padx=12, fill="x", expand=True)
         self._entry(skill_row, self.skill_value, 5).pack(side="left", padx=(0, 8))
@@ -393,9 +309,10 @@ class App(tk.Tk):
         clock_row = tk.Frame(world, bg=COLORS["card"])
         clock_row.pack(fill="x")
         self._label(clock_row, "Velocidade do relógio", color="muted").pack(side="left", padx=(0, 10))
+        normal_speed = self.i18n.pattern("speed_normal", self.language)
         self.speed_combo = ttk.Combobox(
             clock_row, textvariable=self.speed_value, width=14,
-            values=("1× — normal", "2×", "5×", "10×", "20×"),
+            values=(normal_speed, "2×", "5×", "10×", "20×"),
             state="readonly", style="Pixel.TCombobox",
         )
         self.speed_combo.pack(side="left")
@@ -406,31 +323,34 @@ class App(tk.Tk):
         self._label(world, "A velocidade escolhida é aplicada ao selecionar.", size=9,
                     color="muted").pack(fill="x", pady=(7, 0))
 
-        games = self._card(self.body, 'Minigames e basquete', 'ACERTOS E ASSISTÊNCIA')
+        games = self._card(self.body, "Minigames e basquete", "ACERTOS E ASSISTÊNCIA")
         for text, variable, name, supported in (
-            ('Acertos e assistência nos minigames', self.minigames_value, 'minigames', self.minigames_supported),
-            ('Acertar arremessos de basquete (rua, partidas e lances livres)', self.basket_value, 'basket', self.basketball_supported),
+            ("Acertos e assistência nos minigames", self.minigames_value, "minigames", self.minigames_supported),
+            ("Acertar arremessos de basquete (rua, partidas e lances livres)", self.basket_value, "basket", self.basketball_supported),
         ):
             toggle = tk.Checkbutton(
                 games, text=self._tx(text), variable=variable,
                 command=lambda n=name, v=variable: self._command(n, v.get()),
-                bg=COLORS['card'], fg=COLORS['text'], selectcolor=COLORS['field'],
-                activebackground=COLORS['card'], activeforeground=COLORS['green'],
-                disabledforeground='#738797', bd=0, highlightthickness=0,
-                cursor='hand2', font=('Segoe UI', 10), anchor='w',
+                bg=COLORS["card"], fg=COLORS["text"], selectcolor=COLORS["field"],
+                activebackground=COLORS["card"], activeforeground=COLORS["green"],
+                disabledforeground="#738797", bd=0, highlightthickness=0,
+                cursor="hand2", font=("Segoe UI", 10), anchor="w",
             )
-            toggle.pack(fill='x', pady=4)
-            self._controls.append((toggle, 'normal' if supported else 'disabled'))
+            toggle.pack(fill="x", pady=4)
+            self._controls.append((toggle, "normal" if supported else "disabled"))
         if self.minigames_supported and self.basketball_supported:
-            game_note = ('Inicie a atividade normalmente. No basquete, mova e arremesse você mesmo.\n'
-                         'Recursos experimentais; consulte a cobertura no LEIA-ME.')
+            game_note = (
+                "Inicie a atividade normalmente. No basquete, mova e arremesse você mesmo.\n"
+                "Recursos experimentais; consulte a cobertura no LEIA-ME."
+            )
         elif self.basketball_supported:
-            game_note = ('Basquete ativo (mova e arremesse você mesmo; válido para rua, partidas e lances livres).\n'
-                         'Demais minigames continuam desativados nesta build.')
+            game_note = (
+                "Basquete ativo (mova e arremesse você mesmo; válido para rua, partidas e lances livres).\n"
+                "Demais minigames continuam desativados nesta build."
+            )
         else:
-            game_note = 'Assistência de minigames e basquete desativada nesta atualização; os outros controles estão disponíveis.'
-        self._label(games, game_note,
-                    size=9, color='muted').pack(fill='x', pady=(5, 0))
+            game_note = "Assistência de minigames e basquete desativada nesta atualização; os outros controles estão disponíveis."
+        self._label(games, game_note, size=9, color="muted", justify="left").pack(fill="x", pady=(5, 0))
 
         footer_text = (
             "Uso local, para um jogador. Dinheiro e habilidades permanecem ao salvar o jogo.\n"
@@ -445,9 +365,7 @@ class App(tk.Tk):
         else:
             footer_text += ".\nF11/F12 e a assistência de minigames estão desativados nesta build."
         self.footer = self._label(
-            self.body,
-            footer_text,
-            size=9, color="muted", justify="left", wraplength=690,
+            self.body, footer_text, size=9, color="muted", justify="left", wraplength=730,
         )
         self.footer.pack(fill="x", pady=(2, 0))
 
@@ -562,26 +480,16 @@ class App(tk.Tk):
         self._show_values()
 
     def _set_status(self, text: str, *, error: bool = False, hold: float = 0) -> None:
-        self.status_label.configure(text=self._tx(str(text)), fg=COLORS["error"] if error else COLORS["muted"])
+        self._status_raw = str(text)
+        self._status_is_error = error
+        self.status_label.configure(text=self._tx(self._status_raw), fg=COLORS["error"] if error else COLORS["muted"])
         self._message_until = time.monotonic() + hold
 
     def _number(self, value: Any) -> str:
-        if value is None:
-            return "—"
-        try:
-            numeric = float(value)
-            if self.language == "en":
-                if numeric.is_integer():
-                    return f"{int(numeric):,}"
-                return f"{numeric:,.1f}"
-            if numeric.is_integer():
-                return f"{int(numeric):,}".replace(",", ".")
-            return f"{numeric:,.1f}".replace(",", "_").replace(".", ",").replace("_", ".")
-        except (TypeError, ValueError, OverflowError):
-            return str(value)
+        return self.i18n.format_number(value, self.language)
 
     def _show_values(self) -> None:
-        self.money_label.configure(text=self._tx("Saldo: ") + self._number(self._state.get("money")))
+        self.money_label.configure(text=self._tx("Saldo: " + self._number(self._state.get("money"))))
         self._show_skill()
         attributes = self._state.get("attributes") or {}
         intelligence = attributes.get("intelligence") if isinstance(attributes, dict) else None
@@ -590,21 +498,22 @@ class App(tk.Tk):
         )
         self.needs_value.set(bool(self._state.get("freezeNeeds", False)))
         self.health_value.set(bool(self._state.get("freezeHealth", False)))
-        self.minigames_value.set(bool(self._state.get('autoMinigames', False)))
-        self.basket_value.set(bool(self._state.get('autoBasket', False)))
+        self.minigames_value.set(bool(self._state.get("autoMinigames", False)))
+        self.basket_value.set(bool(self._state.get("autoBasket", False)))
+        normal_speed = self.i18n.pattern("speed_normal", self.language)
         try:
             speed = float(self._state.get("speed", 1))
-            self.speed_value.set("1× — normal" if speed == 1 else f"{speed:g}×")
+            self.speed_value.set(normal_speed if speed == 1 else f"{speed:g}×")
         except (TypeError, ValueError):
-            self.speed_value.set("1× — normal")
+            self.speed_value.set(normal_speed)
+
+    def _on_skill_select(self) -> None:
+        self._skill_id = self._skill_label_to_id.get(self.skill_name.get(), self._skill_id)
+        self._show_skill()
 
     def _show_skill(self) -> None:
         skills = self._state.get("skills") or {}
-        identifier = SKILLS.get(self.skill_name.get())
-        if identifier is None and self.language == "en":
-            identifier = next((SKILLS[name] for name, label in SKILLS_EN.items()
-                               if label == self.skill_name.get()), None)
-        value = skills.get(identifier) if isinstance(skills, dict) else None
+        value = skills.get(self._skill_id) if isinstance(skills, dict) else None
         self.current_skill_label.configure(text=self._tx("Atual: " + self._number(value)))
 
     def _action_busy(self) -> bool:
@@ -650,12 +559,16 @@ class App(tk.Tk):
         try:
             value = int(variable.get().strip())
         except (TypeError, ValueError):
-            self._set_status(f"{self._tx(label)}: digite um número inteiro entre {self._number(minimum)} e "
-                             f"{self._number(maximum)}.", error=True, hold=6)
+            self._set_status(
+                f"{label}: digite um número inteiro entre {self._number(minimum)} e {self._number(maximum)}.",
+                error=True, hold=6,
+            )
             return None
         if not minimum <= value <= maximum:
-            self._set_status(f"{self._tx(label)}: use um valor entre {self._number(minimum)} e "
-                             f"{self._number(maximum)}.", error=True, hold=6)
+            self._set_status(
+                f"{label}: use um valor entre {self._number(minimum)} e {self._number(maximum)}.",
+                error=True, hold=6,
+            )
             return None
         return value
 
@@ -674,10 +587,7 @@ class App(tk.Tk):
     def _set_skill(self) -> None:
         value = self._integer(self.skill_value, "Nível da habilidade", 0, 100)
         if value is not None:
-            skill_id = SKILLS.get(self.skill_name.get())
-            if skill_id is None and self.language == "en":
-                skill_id = next(SKILLS[name] for name, label in SKILLS_EN.items()
-                                if label == self.skill_name.get())
+            skill_id = self._skill_label_to_id.get(self.skill_name.get(), self._skill_id)
             self._command("skill", {"name": skill_id, "value": value})
 
     def _set_all_skills(self) -> None:

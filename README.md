@@ -5,10 +5,11 @@
 [![Python](https://img.shields.io/badge/Python-3.12-304356?style=flat-square)](#rodar-do-código-fonte-ou-compilar)
 [![Licença](https://img.shields.io/badge/Licença-MIT-blue?style=flat-square)](LICENSE)
 
-Painel desktop bilíngue (**Português / English**) em Python + Tkinter com instrumentação **Frida (IL2CPP)** para ajuste de ritmo, habilidades, atributos, necessidades e dinheiro no modo single-player de **To Pixelia** (Steam).
+Painel desktop multilíngue com **detecção automática do idioma do Windows** (**13 idiomas nativos** + suporte a traduções JSON externas) em Python + Tkinter e instrumentação **Frida (IL2CPP)** para ajuste de ritmo, habilidades, atributos, necessidades e dinheiro no modo single-player de **To Pixelia** (Steam).
 
 > 📖 **Documentação completa:**
 > - [**Guia Passo a Passo (Uso & Build)**](docs/GUIA-PASSO-A-PASSO.md)
+> - [**Idioma Universal & Como Traduzir (13 idiomas + JSONs customizados)**](docs/TRADUCOES.md)
 > - [**Por que dá Falso Positivo no VirusTotal (Drop do Arquivo)**](docs/FALSO-POSITIVO-VIRUSTOTAL.md)
 > - [**Arquitetura Interna (Diagramas & Módulos)**](docs/ARQUITETURA.md)
 > - [**Relatório de Validação & Hashes**](docs/VALIDACAO.md)
@@ -40,7 +41,7 @@ Painel desktop bilíngue (**Português / English**) em Python + Tkinter com inst
 | **Restaurar necessidades** | ✅ Disponível | Preenche as 6 necessidades uma única vez sob demanda. |
 | **Manter saúde cheia** | ✅ Disponível | Mantém `health` em `100` durante as atualizações do personagem. |
 | **Velocidade do relógio** | ✅ Disponível | `1×`, `2×`, `5×`, `10×` ou `20×` — multiplica apenas ticks normais de 1 segundo, respeitando pausas e transições. |
-| **Interface Bilíngue (PT / EN)** | ✅ Disponível | Botões **PT / EN** no canto superior direito preservando conexão e seleção atual. |
+| **Idioma Universal (Auto Windows)** | ✅ Disponível | Detecta automaticamente o idioma do Windows (`pt`, `en`, `es`, `fr`, `de`, `it`, `pl`, `ru`, `tr`, `ja`, `ko`, `zh-Hans`, `zh-Hant`, fallback `en`) e aceita JSONs extras em `locales/`. |
 | **Basquete (arremessos)** | ✅ Reativado | Acerta arremessos na rua, partidas e lances livres (`src/basketball.js` revalidado na build `25632131`; atalho `Ctrl+Alt+F12`). |
 | **Demais Minigames** | ⏸️ Desativado | Desativado nesta build até revalidação dos endereços nativos (RVAs) em `src/minigames.js`. |
 
@@ -115,12 +116,14 @@ PixeliaLivre/
 │   ├── ARQUITETURA.md           # Diagramas Mermaid e fluxo interno dos módulos
 │   ├── FALSO-POSITIVO-VIRUSTOTAL.md  # Análise técnica detalhada do drop e VirusTotal
 │   ├── GUIA-PASSO-A-PASSO.md    # Manual completo para jogadores e desenvolvedores
+│   ├── TRADUCOES.md             # Detecção de idioma do Windows e guia de traduções JSON
 │   └── VALIDACAO.md             # Hashes conferidos da Steam build 25632131 e limites
 ├── licenses/                    # Licenças do Python e PyInstaller incluídas no pacote
 ├── scripts/
 │   ├── build.ps1                # Script local de build, --self-test, ZIP e SHA256SUMS.txt
 │   └── run-from-source.ps1      # Execução direta pelo Python sem PyInstaller
 ├── src/
+│   ├── locales/                 # 13 pacotes de idioma (.json) + _template.json
 │   ├── agent.js                 # Agente Frida injetado no jogo (hooks IL2CPP + hotkeys)
 │   ├── backend.py               # Verificação SHA-256 do jogo, attach Frida e RPC
 │   ├── basketball.js            # Hooks de basquete revalidados para a build 25632131
@@ -128,8 +131,9 @@ PixeliaLivre/
 │   ├── build.py                 # Configuração PyInstaller (--onedir --exclude-module frida)
 │   ├── compatibility.json       # Manifesto da build Steam 25632131 (v1.1.28)
 │   ├── entry.py                 # Ponto de entrada, fallback Tcl e --self-test
+│   ├── i18n.py                  # Detecção de idioma do Windows e motor universal i18n
 │   ├── minigames.js             # Hooks legados (build 23486352 — desativados na v1.1.28)
-│   └── panel.py                 # Interface Tkinter bilíngue PT/EN
+│   └── panel.py                 # Interface Tkinter multilíngue
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── LICENSE                      # Licença MIT

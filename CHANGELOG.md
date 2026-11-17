@@ -2,6 +2,16 @@
 
 Todas as alterações relevantes do **Pixelia Livre** são documentadas neste arquivo.
 
+## [v1.1.28.2] - 2026-11-17
+
+### Adicionado / Alterado
+- **Sistema de Idioma Universal (`src/i18n.py` + `src/locales/`):** detecção automática do idioma de exibição do Windows via `GetUserPreferredUILanguages` / `GetUserDefaultUILanguage`, com fallback universal em Inglês (`en`).
+- **13 idiomas nativos completos:** Português (`pt`), Inglês (`en`), Espanhol (`es`), Francês (`fr`), Alemão (`de`), Italiano (`it`), Polonês (`pl`), Russo (`ru`), Turco (`tr`), Japonês (`ja`), Coreano (`ko`), Chinês Simplificado (`zh-Hans`) e Chinês Tradicional (`zh-Hant`).
+- **Tradução de todas as ferramentas e mensagens:** cobertura unificada para todos os painéis, habilidades, formatação numérica e mensagens/erros dinâmicos vindos de `panel.py`, `backend.py`, `bootstrap.py`, `agent.js`, `basketball.js` e `minigames.js`.
+- **Suporte a traduções externas sem recompilar:** pasta `locales/` ao lado de `PixeliaLivre.exe` (com `_template.json` incluído) permite adicionar ou personalizar qualquer idioma via JSON.
+
+---
+
 ## [v1.1.28.1] - 2026-11-16
 
 ### Adicionado / Alterado

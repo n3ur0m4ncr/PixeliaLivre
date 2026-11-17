@@ -51,7 +51,7 @@ Este guia ensina, passo a passo, **como instalar, usar, auditar e compilar** o *
 
 ### Passo 4: Conectar o painel (1ª execução)
 1. Execute **`PixeliaLivre.exe`**.
-2. Se desejar interface em inglês, clique em **EN** no canto superior direito (clique em **PT** para voltar ao português). A troca de idioma preserva a conexão e a habilidade selecionada.
+2. O painel detecta automaticamente o idioma do seu **Windows** (`Português`, `English`, `Español`, `Français`, `Deutsch`, `Italiano`, `Polski`, `Русский`, `Türkçe`, `日本語`, `한국어`, `简体中文`, `繁體中文`, usando `English` como fallback universal). Se desejar trocar manualmente ou usar uma tradução JSON customizada da pasta `locales\`, utilize o seletor de idioma no canto superior direito. A troca preserva a conexão e a habilidade selecionada.
 3. Clique em **Conectar ao jogo**.
 4. **Na primeira conexão**, o painel exibirá:
    > *"Conectando. Na primeira vez, será baixado um componente de 42 MB. Aguarde…"*

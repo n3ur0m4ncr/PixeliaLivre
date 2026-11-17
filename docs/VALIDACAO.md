@@ -37,7 +37,8 @@
    - Executado após o empacotamento com PyInstaller `6.9.0` + Python `3.12.4`:
      - `package_startup`: `passed`
      - `tkinter`: `passed`
-     - `resources`: `true` (`agent.js`, `basketball.js`, `minigames.js`, `compatibility.json` presentes)
+     - `resources`: `true` (`agent.js`, `basketball.js`, `minigames.js`, `compatibility.json`, `locales/en.json`, `locales/pt.json` presentes)
+     - `detected_language` / `available_locales`: confirma detecção automática do idioma do Windows e carregamento dos 13 pacotes nativos
      - `gameplay_tested`: `false`
    - Os hashes SHA-256 oficiais do pacote `.zip` e do `PixeliaLivre.exe` publicados acompanham cada versão no arquivo `SHA256SUMS.txt` na aba **Releases**.
 

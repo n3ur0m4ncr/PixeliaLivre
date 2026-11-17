@@ -10,6 +10,12 @@ Contribuições são muito bem-vindas, principalmente quando *To Pixelia* recebe
 
 ---
 
+## Adicionando ou Melhorando Traduções
+
+Veja o guia passo a passo em [`docs/TRADUCOES.md`](docs/TRADUCOES.md): basta copiar `src/locales/_template.json` para `src/locales/<codigo>.json`, preencher `meta`, `number_format`, `skills`, `patterns` e `strings`, e testar com o seletor de idioma do painel.
+
+---
+
 ## Atualizando para uma Nova Build da Steam
 
 Quando *To Pixelia* atualizar na Steam:
